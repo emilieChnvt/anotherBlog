@@ -26,7 +26,10 @@ final class CommentController extends AbstractController
     public function edit(Comment $comment, Request $request, EntityManagerInterface $manager): Response
     {
         if(!$comment){
-            return $this->redirectToRoute('app_posts_show', ['id' => $comment->getPost()->getId()], Response::HTTP_BAD_REQUEST);
+            return $this->redirectToRoute('app_posts_show', ['id' => $comment->getPost()->getId()]);
+        }
+        if($this->getUser() !== $comment->getAuthor() || in_array('ROLE_ADMIN', $this->getUser()->getRoles())){
+            return $this->redirectToRoute('app_posts_show', ['id' => $comment->getPost()->getId()]);
         }
         $commentForm = $this->createForm(CommentType::class, $comment);
         $commentForm->handleRequest($request);
@@ -47,6 +50,9 @@ final class CommentController extends AbstractController
     {
         if(!$comment){
             return $this->redirectToRoute('app_posts_show', ['id'=>$comment->getPost()->getId()]);
+        }
+        if($this->getUser() !== $comment->getAuthor() || in_array('ROLE_ADMIN', $this->getUser()->getRoles())){
+            return $this->redirectToRoute('app_posts_show', ['id' => $comment->getPost()->getId()]);
         }
         $manager->remove($comment);
         $manager->flush();

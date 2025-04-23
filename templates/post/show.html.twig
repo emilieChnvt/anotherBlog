@@ -11,13 +11,16 @@
                 <h5 class="card-title">{{ post.title }}</h5>
                 <p class="card-text">{{ post.content}}</p>
                 <a href="{{ path('app_posts') }}" class="btn btn-secondary">return</a>
-                {% if 'ROLE_ADMIN' in app.user.roles %}
-                    <a href="{{ path('app_posts_edit',{id:post.id}) }}" class="btn btn-info">edit</a>
-                    <form method="post"
-                          action="{{ path('app_posts_delete', {id: post.id}) }}"
-                          onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce chapeau ?');">
-                        <button class="btn btn-outline-danger btn-sm">Supprimer</button>
-                    </form>
+                {% if app.user %}
+                    {% if 'ROLE_ADMIN' in app.user.roles %}
+                        <a href="{{ path('app_posts_edit',{id:post.id}) }}" class="btn btn-info">edit</a>
+                        <form method="post"
+                              action="{{ path('app_posts_delete', {id: post.id}) }}"
+                              onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce chapeau ?');">
+                            <button class="btn btn-outline-danger btn-sm">Supprimer</button>
+                        </form>
+                    {% endif %}
+
                 {% endif %}
             </div>
         </div>
@@ -30,12 +33,16 @@
                     <h5>{{ comment.title }}</h5>
                     <p>{{ comment.content }}</p>
                     <p>{{ comment.author.email }}</p>
-                    <a href="{{ path('app_comment_edit', {id:comment.id}) }}"  class="btn btn-info">edit</a>
-                    <form method="post"
-                          action="{{ path('app_comment_delete', {id: comment.id}) }}"
-                          onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce chapeau ?');">
-                        <button class="btn btn-outline-danger btn-sm">Supprimer</button>
-                    </form>
+                    {% if app.user %}
+                        {% if 'ROLE_ADMIN' in app.user.roles %}
+                            <a href="{{ path('app_comment_edit', {id:comment.id}) }}"  class="btn btn-info">edit</a>
+                            <form method="post"
+                                  action="{{ path('app_comment_delete', {id: comment.id}) }}"
+                                  onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce chapeau ?');">
+                                <button class="btn btn-outline-danger btn-sm">Supprimer</button>
+                            </form>
+                        {% endif %}
+                    {% endif %}
                 </div>
             {% endfor %}
             <div class="create">
