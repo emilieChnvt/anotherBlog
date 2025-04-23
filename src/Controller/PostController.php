@@ -3,11 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Post;
+use App\Form\PostType;
 use App\Repository\PostRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Authenticator\Token\PostAuthenticationToken;
 
 final class PostController extends AbstractController
 {
@@ -25,6 +27,57 @@ final class PostController extends AbstractController
         return $this->render('post/show.html.twig', [
             'post' => $post,
         ]);
+    }
+
+
+    #[Route('/post/create', name: 'app_posts_create')]
+    public function create(EntityManagerInterface $entityManager, Request $request): Response
+    {
+        $post = new Post();
+        $postForm = $this->createForm(PostType::class, $post);
+        $postForm->handleRequest($request);
+        if($postForm->isSubmitted() && $postForm->isValid()){
+            $entityManager->persist($post);
+            $entityManager->flush();
+            return $this->redirectToRoute('app_posts');
+        }
+        return $this->render('post/create.html.twig', [
+            'postForm' => $postForm->createView(),
+        ]);
+
+    }
+
+
+    #[Route('/post/edit/{id}', name: 'app_posts_edit')]
+    public function edit(Post $post, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        if(!$post)
+        {
+            return $this->redirectToRoute('app_posts');
+        }
+        $postForm = $this->createForm(PostType::class, $post);
+        $postForm->handleRequest($request);
+        if($postForm->isSubmitted() && $postForm->isValid()){
+            $entityManager->persist($post);
+            $entityManager->flush();
+            return $this->redirectToRoute('app_posts');
+        }
+
+        return $this->render('post/edit.html.twig', [
+            'postForm' => $postForm->createView(),
+        ]);
+    }
+
+    #[Route('/post/delete/{id}', name: 'app_posts_delete')]
+    public function delete(Post $post, EntityManagerInterface $entityManager): Response
+    {
+        if(!$post)
+        {
+            return $this->redirectToRoute('app_posts');
+        }
+        $entityManager->remove($post);
+        $entityManager->flush();
+        return $this->redirectToRoute('app_posts');
     }
 
 }

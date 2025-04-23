@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme postForm 'bootstrap_5_layout.html.twig' %}
+{% block body %}
+
+    {{ form_start(postForm) }}
+
+    {{ form_label(postForm.title) }}
+    {{ form_widget(postForm.title) }}
+
+    {{ form_label(postForm.content) }}
+    {{ form_widget(postForm.content) }}
+    <button type="submit">ADD</button>
+    {{ form_end(postForm) }}
+
+{% endblock %}
