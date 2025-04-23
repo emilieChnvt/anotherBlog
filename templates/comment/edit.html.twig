@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block body%}
+
+    <div class="create">
+        <h4>Edit your comment</h4>
+        {{ form_start(commentForm) }}
+
+        {{ form_label(commentForm.title) }}
+        {{ form_widget(commentForm.title) }}
+
+        {{ form_label(commentForm.content) }}
+        {{ form_widget(commentForm.content) }}
+        <button type="submit" class="btn btn-success">EDIT</button>
+        {{ form_end(commentForm) }}
+    </div>
+
+{% endblock %}
