@@ -33,6 +33,9 @@ final class PostController extends AbstractController
     #[Route('/post/create', name: 'app_posts_create')]
     public function create(EntityManagerInterface $entityManager, Request $request): Response
     {
+        if(!in_array('ROLE_ADMIN', $this->getUser()->getRoles())){
+            return $this->redirectToRoute('app_login');
+        }
         $post = new Post();
         $postForm = $this->createForm(PostType::class, $post);
         $postForm->handleRequest($request);
@@ -55,6 +58,9 @@ final class PostController extends AbstractController
         {
             return $this->redirectToRoute('app_posts');
         }
+        if(!in_array('ROLE_ADMIN', $this->getUser()->getRoles())){
+            return $this->redirectToRoute('app_login');
+        }
         $postForm = $this->createForm(PostType::class, $post);
         $postForm->handleRequest($request);
         if($postForm->isSubmitted() && $postForm->isValid()){
@@ -74,6 +80,9 @@ final class PostController extends AbstractController
         if(!$post)
         {
             return $this->redirectToRoute('app_posts');
+        }
+        if(!in_array('ROLE_ADMIN', $this->getUser()->getRoles())){
+            return $this->redirectToRoute('app_login');
         }
         $entityManager->remove($post);
         $entityManager->flush();

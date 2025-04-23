@@ -9,6 +9,17 @@
                 <a class="nav-link active" aria-current="page" href="{{ path('app_register') }}">Register</a>
                 <a class="nav-link" href="{{ path('app_login') }}">login</a>
                 <a class="nav-link" href="{{ path('app_logout') }}">logout</a>
+
+                {% if app.user %}
+                    {% if 'ROLE_ADMIN'  in app.user.roles %}
+
+                        <a class="nav-link" href="{{ path('app_posts_create') }}">create a post</a>
+
+                    {% endif %}
+                {% endif %}
+
+
+
             </div>
         </div>
     </div>
