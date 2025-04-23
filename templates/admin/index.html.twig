@@ -9,6 +9,7 @@
            <td>id</td>
            <td>email</td>
            <td>roles</td>
+           <td>action</td>
         </tr>
     </thead>
     <tbody>
@@ -18,7 +19,17 @@
         <td>{{ user.email }}</td>
         <td>{% for role in user.roles %}
                 {{ role }}
-            {% endfor %} </td>
+            {% endfor %}
+        </td>
+        <td>
+            {% if 'ROLE_ADMIN' in user.roles %}
+                <a href="{{ path('app_demote', {id: user.id}) }}" class="btn btn-danger">DEMOTE</a>
+            {% else %}
+                <a href="{{ path('app_promote', {id: user.id}) }}" class="btn btn-success">PROMOTE</a>
+            {% endif   %}
+
+        </td>
+
     </tr>
     {% endfor %}
     </tbody>
