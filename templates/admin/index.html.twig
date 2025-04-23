@@ -16,9 +16,9 @@
     <tr>
         <td>{{ user.id }}</td>
         <td>{{ user.email }}</td>
-        {% for role in user.roles %}
-            <td>{{ role }}</td>
-        {% endfor %}
+        <td>{% for role in user.roles %}
+                {{ role }}
+            {% endfor %} </td>
     </tr>
     {% endfor %}
     </tbody>
