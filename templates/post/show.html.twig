@@ -1,5 +1,6 @@
 {% extends 'base.html.twig' %}
 
+{% form_theme commentForm 'bootstrap_5_layout.html.twig' %}
 
 
 {% block body %}
@@ -20,4 +21,28 @@
                 {% endif %}
             </div>
         </div>
+
+    <div class="w-100 border border-dark border-2 mt-5 p-2">
+        <h5>Comments</h5>
+        <div class="d-flex justify-content-around">
+            {% for comment in post.comments %}
+                <div class=" w-25 border border-1 p-2">
+                    <h5>{{ comment.title }}</h5>
+                    <p>{{ comment.content }}</p>
+                    <p>{{ comment.author.email }}</p>
+                </div>
+            {% endfor %}
+            <div class="create">
+                {{ form_start(commentForm) }}
+
+                {{ form_label(commentForm.title) }}
+                {{ form_widget(commentForm.title) }}
+
+                {{ form_label(commentForm.content) }}
+                {{ form_widget(commentForm.content) }}
+                <button type="submit" class="btn btn-success">Add comment</button>
+                {{ form_end(commentForm) }}
+            </div>
+        </div>
+    </div>
 {% endblock %}
