@@ -6,8 +6,8 @@
 <div class="d-flex justify-content-around flex-wrap">
     {% for post in posts %}
         <div class="card" style="width: fit-content;">
-            <div class="d-flex justify-content-between gap-2">
 
+            <div class="d-flex justify-content-between gap-2 mt-4 " >
                 {% for image in post.images %}
                     <img src="{{ vich_uploader_asset(image,'imageFile') | imagine_filter('my_thumb') }}" alt="">
                 {% endfor %}
