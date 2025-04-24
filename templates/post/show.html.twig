@@ -9,8 +9,12 @@
                 <h4>je suis le show</h4>
                 <h5 class="card-title">{{ post.title }}</h5>
                 <p class="card-text">{{ post.content}}</p>
+                {% if app.user %}
+                {% if 'ROLE_ADMIN' in app.user.roles %}
                 <a href="{{ path('app_post_addImage', {id:post.id}) }}" class="btn btn-success">add image</a>
+                {% endif %}
 
+                {% endif %}
                 <div class="d-flex justify-content-between gap-2 mt-4 " >
                     {% for image in post.images %}
                         <img src="{{ vich_uploader_asset(image,'imageFile') | imagine_filter('my_thumb') }}" alt="">
