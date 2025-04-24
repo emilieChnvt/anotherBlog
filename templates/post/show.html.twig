@@ -11,7 +11,7 @@
                 <h5 class="card-title">{{ post.title }}</h5>
                 <p class="card-text">{{ post.content}}</p>
                 {% for image in post.images %}
-                    <img src="{{ vich_uploader_asset(image,'imageFile') }}" alt="">
+                    <img src="{{ vich_uploader_asset(image,'imageFile') | imagine_filter('my_thumb') }}" alt="">
                 {% endfor %}
                 <a href="{{ path('app_post_addImage', {id:post.id}) }}" class="btn btn-success">add image</a>
 
