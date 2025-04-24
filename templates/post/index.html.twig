@@ -3,25 +3,33 @@
 {% block title %}Hello PostController!{% endblock %}
 
 {% block body %}
-{% for post in posts %}
-    <div class="card" style="width: 18rem;">
-        <img src="..." class="card-img-top" alt="...">
-        <div class="card-body">
-            <h5 class="card-title">{{ post.title }}</h5>
-            <p class="card-text">{{ post.content}}</p>
-            <a href="{{ path('app_posts_show', {id : post.id}) }}" class="btn btn-primary">see more</a>
+<div class="d-flex justify-content-around flex-wrap">
+    {% for post in posts %}
+        <div class="card" style="width: fit-content;">
+            <div class="d-flex justify-content-between gap-2">
+                {% for image in post.images %}
+                    <img src="{{ vich_uploader_asset(image,'imageFile') | imagine_filter('my_thumb') }}" alt="">
+                {% endfor %}
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">{{ post.title }}</h5>
+                <p class="card-text">{{ post.content}}</p>
+                <div class="d-flex justify-content-between gap-2">
+                    <a href="{{ path('app_posts_show', {id : post.id}) }}" class="btn btn-primary">see more</a>
 
-            {% if app.user %}
-                {% if 'ROLE_ADMIN' in app.user.roles %}
-                    <a href="{{ path('app_posts_edit', {id : post.id}) }}" class="btn btn-info">edit</a>
-                    <form method="post"
-                          action="{{ path('app_posts_delete', {id: post.id}) }}"
-                          onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce chapeau ?');">
-                        <button class="btn btn-outline-danger btn-sm">Supprimer</button>
-                    </form>
-                {% endif %}
-            {% endif %}
+                    {% if app.user %}
+                        {% if 'ROLE_ADMIN' in app.user.roles %}
+                            <a href="{{ path('app_posts_edit', {id : post.id}) }}" class="btn btn-info">edit</a>
+                            <form method="post"
+                                  action="{{ path('app_posts_delete', {id: post.id}) }}"
+                                  onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce chapeau ?');">
+                                <button class="btn btn-outline-danger">Supprimer</button>
+                            </form>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
         </div>
-    </div>
-{% endfor %}
+    {% endfor %}
+</div>
 {% endblock %}

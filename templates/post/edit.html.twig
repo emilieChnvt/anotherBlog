@@ -2,7 +2,7 @@
 
 {% form_theme postForm 'bootstrap_5_layout.html.twig' %}
 {% block body %}
-    <p>Edit your artcile</p>
+    <h3>Edit your article</h3>
 
     {{ form_start(postForm) }}
 
@@ -11,7 +11,7 @@
 
     {{ form_label(postForm.content) }}
     {{ form_widget(postForm.content) }}
-    <button type="submit">EDIT</button>
+    <button type="submit" class="btn btn-success">EDIT</button>
     {{ form_end(postForm) }}
 
 {% endblock %}
