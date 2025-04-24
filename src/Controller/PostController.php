@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Comment;
+use App\Entity\Image;
 use App\Entity\Post;
 use App\Form\CommentType;
+use App\Form\ImageType;
 use App\Form\PostType;
 use App\Repository\PostRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -101,6 +103,32 @@ final class PostController extends AbstractController
         $entityManager->remove($post);
         $entityManager->flush();
         return $this->redirectToRoute('app_posts');
+    }
+
+    #[Route('/post/addImage/{id}', name: 'app_post_addImage')]
+    public function addImage(Post $post, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        if(!$post)
+        {
+            return $this->redirectToRoute('app_posts');
+        }
+        if(!in_array('ROLE_ADMIN', $this->getUser()->getRoles())){
+            return $this->redirectToRoute('app_login');
+        }
+        $image = new Image();
+        $imageForm = $this->createForm(ImageType::class, $image);
+        $imageForm->handleRequest($request);
+        if($imageForm->isSubmitted() && $imageForm->isValid()){
+            $image->setPost($post);
+            $entityManager->persist($image);
+            $entityManager->flush();
+            return $this->redirectToRoute('app_posts_show', ['id' => $post->getId()]);
+        }
+        return $this->render('post/image.html.twig', [
+            'post' => $post,
+            'imageForm' => $imageForm->createView(),
+        ]);
+
     }
 
 }

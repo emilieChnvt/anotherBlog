@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <h3>Add a new image : </h3>
+
+    {{ form_start(imageForm) }}
+    {{ form_row(imageForm.imageFile) }}
+    <button type="submit" class="btn btn-success">Add</button>
+    {{ form_end(imageForm) }}
+
+
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+

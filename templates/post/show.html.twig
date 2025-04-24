@@ -10,6 +10,11 @@
                 <h4>je suis le show</h4>
                 <h5 class="card-title">{{ post.title }}</h5>
                 <p class="card-text">{{ post.content}}</p>
+                {% for image in post.images %}
+                    <img src="{{ vich_uploader_asset(image,'imageFile') }}" alt="">
+                {% endfor %}
+                <a href="{{ path('app_post_addImage', {id:post.id}) }}" class="btn btn-success">add image</a>
+
                 <a href="{{ path('app_posts') }}" class="btn btn-secondary">return</a>
                 {% if app.user %}
                     {% if 'ROLE_ADMIN' in app.user.roles %}
